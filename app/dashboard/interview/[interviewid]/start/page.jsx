@@ -1,46 +1,48 @@
 "use client";
 
-import { mockinterview } from '@/utils/schema';
-import { eq } from 'drizzle-orm';
-import React, { useEffect, useState } from 'react';
-import { db } from 'utils/db';
-import QuestionsList from './_components/QuestionsList';
-import RecordAnswerSection from './_components/RecordAnswerSection';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { use } from "react";                      // ← unwrap params
+import React, { useEffect, useState } from "react";
+import { mockinterview } from "@/utils/schema";
+import { eq } from "drizzle-orm";
+import { db } from "utils/db";
+import QuestionsList from "./_components/QuestionsList";
+import RecordAnswerSection from "./_components/RecordAnswerSection";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-function StartInterview({ interviewid }) {
-  const [interviewdata, setInterviewdata] = useState();
+export default function StartInterview({ params }) {
+  // 1️⃣ Unwrap the params promise into a plain object
+  const { interviewid } = use(params);
+
+  // 2️⃣ Local state
+  const [interviewdata, setInterviewdata] = useState(null);
   const [mockinterviewquestions, setMockinterviewquestions] = useState([]);
   const [activequestionindex, setActivequestionindex] = useState(0);
 
+  // 3️⃣ Fetch on mount
   useEffect(() => {
-    dbdata();
-  }, []);
+    (async () => {
+      try {
+        const rows = await db
+          .select()
+          .from(mockinterview)
+          .where(eq(mockinterview.mockid, interviewid));
 
-  const dbdata = async () => {
-    try {
-      console.log("Interview ID:", interviewid);
-      const result = await db
-        .select()
-        .from(mockinterview)
-        .where(eq(mockinterview.mockid, interviewid));
+        if (rows.length === 0) {
+          console.error("No interview data for ID:", interviewid);
+          return;
+        }
 
-      if (result.length === 0) {
-        console.error("No interview data found for the given ID:", interviewid);
-        return;
+        const row = { ...rows[0] }; // plain object
+        setInterviewdata(row);
+        setMockinterviewquestions(JSON.parse(row.jsonmockresp));
+      } catch (err) {
+        console.error("Error fetching interview details:", err);
       }
+    })();
+  }, [interviewid]);
 
-      const plainInterview = { ...result[0] };
-      const questions = JSON.parse(plainInterview.jsonmockresp);
-
-      setMockinterviewquestions(questions);
-      setInterviewdata(plainInterview);
-    } catch (error) {
-      console.error("Error fetching interview details:", error);
-    }
-  };
-
+  // 4️⃣ Render
   return (
     <div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -57,19 +59,17 @@ function StartInterview({ interviewid }) {
         />
       </div>
 
-      <div className="flex justify-end gap-6 mt-4">
+      <div className="flex justify-end gap-6 mt-6">
         {activequestionindex > 0 && (
           <Button onClick={() => setActivequestionindex(activequestionindex - 1)}>
             Previous Question
           </Button>
         )}
-
-        {activequestionindex !== mockinterviewquestions.length - 1 && (
+        {activequestionindex < mockinterviewquestions.length - 1 && (
           <Button onClick={() => setActivequestionindex(activequestionindex + 1)}>
             Next Question
           </Button>
         )}
-
         {activequestionindex === mockinterviewquestions.length - 1 && (
           <Link href={`/dashboard/interview/${interviewid}/feedback`}>
             <Button>End Interview</Button>
@@ -79,5 +79,3 @@ function StartInterview({ interviewid }) {
     </div>
   );
 }
-
-export default StartInterview;
