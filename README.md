@@ -1,147 +1,322 @@
-## MockTalk
+# MockTalk — AI Mock Interview Platform
 
-**AI-Powered Mock Interview Coach**
+MockTalk is an AI-powered mock interview platform that helps users practice technical interviews through role-specific questions, voice-based answers, and AI-generated feedback.
 
-MockTalk enables you to practice and perfect your interview skills with role-specific, AI-generated questions and real-time feedback. Whether you’re targeting a software engineer, data scientist, or tech lead position, MockTalk tailors each session to your goals and experience level.
+Users can enter a job role, technology stack, and experience level. The platform generates interview questions using Google's Gemini API, captures answers using speech-to-text, evaluates each answer with AI, and stores the results for review.
 
----
+## 🚀 Features
 
-## 🎯 Core Features
+- 🔐 User authentication with Clerk
+- 💼 Create interviews based on:
+  - Job title
+  - Technology stack
+  - Experience level
+- 🤖 AI-generated interview questions using Google Gemini
+- 🎤 Voice-based answer recording with speech-to-text
+- 📹 Webcam integration for a realistic interview experience
+- 🧠 AI-based answer evaluation
+- ⭐ Answer rating out of 10
+- 💬 Detailed AI feedback for every answer
+- 📊 Overall interview rating
+- 🗄️ Persistent interview and feedback data using PostgreSQL
+- ⚡ Responsive Next.js interface
 
-* **Role-Based Question Generator**: Input your desired job title, tech stack, and years of experience to receive highly relevant interview questions.
-* **Generative AI Engine**: Powered by Gemini, generate fresh, contextual questions on the fly.
-* **Live Performance Feedback**: Get instant ratings and actionable improvement suggestions after each answer.
-* **Webcam & Microphone Integration**: Simulate a real interview environment with video and audio recording.
-* **Progress Tracking Dashboard**: Monitor your metrics and see your growth over time.
+## 🛠️ Tech Stack
 
----
+### Frontend
+- Next.js
+- React
+- JavaScript
+- Tailwind CSS
 
-## 🛠️ Tech Stack & Integrations
+### Authentication
+- Clerk
 
-* **Frontend**: Next.js | Tailwind CSS
-* **Language**: TypeScript
-* **Database**: PostgreSQL (via Drizzle ORM)
-* **Authentication**: Clerk
-* **AI Provider**: Gemini (OpenAI)
-* **Hosting**: Vercel
+### Database
+- PostgreSQL
+- Neon
+- Drizzle ORM
 
----
+### AI
+- Google Gemini API
 
-## 🚀 Quickstart
+### Browser APIs / Libraries
+- Speech-to-text using `react-hook-speech-to-text`
+- Webcam using `react-webcam`
 
-### 1. Prerequisites
+### Tools
+- Git
+- GitHub
+- VS Code
+- npm
 
-* Node.js (v18+) & npm/yarn
-* PostgreSQL database (e.g., Neon)
-* OpenAI (Gemini) API key
-* Clerk API keys
-* Code editor (VS Code recommended)
+## 🏗️ Application Flow
 
-### 2. Clone & Install
-
-```bash
-# Clone the repo
-git clone https://github.com/your-username/ai-interview-coach.git
-cd ai-interview-coach
-
-# Install dependencies
-npm install        # or yarn install
-```
-
-### 3. Configure Environment
-
-Create a `.env.local` file at the project root and populate with:
-
-```env
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_GEMINI_API_KEY=your_gemini_api_key
-DATABASE_URL=your_postgres_connection_string
-NEXT_PUBLIC_INFO_INTRO="Enable webcam & mic to start the interview. We never record your video."
-NEXT_PUBLIC_INFO_INSTRUCT="Answer five questions; at the end you’ll receive a detailed report."
-```
-
-### 4. Run Locally
-
-```bash
-npm run dev  # or yarn dev
-```
-
-Open [https://localhost:3000](https://localhost:3000) in your browser to begin.
-
----
+User
+  ↓
+Clerk Authentication
+  ↓
+Dashboard
+  ↓
+Create Interview
+  ↓
+Job Title + Tech Stack + Experience
+  ↓
+Gemini API
+  ↓
+AI-generated Interview Questions
+  ↓
+Interview Session
+  ↓
+Webcam + Microphone + Speech-to-Text
+  ↓
+Candidate Answer
+  ↓
+Gemini AI Evaluation
+  ↓
+Rating + Feedback
+  ↓
+PostgreSQL / Neon
+  ↓
+Feedback Dashboard
 
 ## 📁 Project Structure
 
-```bash
-# Root directory
-├── app/                   # Next.js pages and routes
-├── components/            # Reusable UI components
-├── public/                # Static assets (images, icons)
-├── lib/                   # Database and helper logic
-├── utils/                 # Utility functions (API calls, formatting)
-├── components.json        # Component configuration
-├── drizzle.config.js      # Drizzle ORM configuration
-├── middleware.js          # Custom Next.js middleware
-├── postcss.config.mjs     # PostCSS configuration (ESM)
-├── jsconfig.json          # JavaScript project configuration
-├── .env.local             # Environment variables (not committed)
-├── tailwind.config.js     # Tailwind CSS configuration
-├── tsconfig.json          # TypeScript configuration
-└── package.json           # Dependencies and scripts
-```
+InterviewAi/
+│
+├── app/
+│   ├── (auth)/
+│   │   ├── sign-in/
+│   │   │   └── [[...sign-in]]/
+│   │   │       └── page.jsx
+│   │   └── sign-up/
+│   │       └── [[...sign-up]]/
+│   │           └── page.jsx
+│   │
+│   ├── dashboard/
+│   │   ├── _components/
+│   │   │   ├── AddNewInterview.jsx
+│   │   │   ├── Header.jsx
+│   │   │   ├── InterviewList.jsx
+│   │   │   └── InterviewcardList.jsx
+│   │   │
+│   │   ├── interview/
+│   │   │   └── [interviewid]/
+│   │   │       ├── feedback/
+│   │   │       │   └── page.jsx
+│   │   │       ├── start/
+│   │   │       │   ├── _components/
+│   │   │       │   ├── QuestionsList.jsx
+│   │   │       │   └── RecordAnswerSection.jsx
+│   │   │       └── page.jsx
+│   │   │
+│   │   ├── questions/
+│   │   │   └── page.jsx
+│   │   │
+│   │   ├── upgrade/
+│   │   │   ├── _components/
+│   │   │   │   └── PlanItemCard.jsx
+│   │   │   └── page.jsx
+│   │   │
+│   │   ├── layout.jsx
+│   │   └── page.jsx
+│   │
+│   ├── globals.css
+│   ├── layout.js
+│   └── page.js
+│
+├── components/
+│   ├── ui/
+│   │   ├── button.jsx
+│   │   ├── collapsible.jsx
+│   │   ├── dialog.jsx
+│   │   ├── input.jsx
+│   │   ├── sonner.jsx
+│   │   └── textarea.jsx
+│   └── components.json
+│
+├── lib/
+│   └── utils.js
+│
+├── utils/
+│   ├── db.js
+│   ├── Geminimodel.js
+│   ├── planData.js
+│   └── schema.js
+│
+├── public/
+│   ├── logo.svg
+│   ├── webcam.png
+│   └── other assets
+│
+├── drizzle.config.js
+├── middleware.js
+├── next.config.mjs
+├── package.json
+├── package-lock.json
+├── tailwind.config.js
+└── tsconfig.json
+
+## 🧠 How AI Is Used
+
+Gemini is used in two major parts of the application.
+
+### 1. Interview Question Generation
+
+The user provides:
+
+- Job Title
+- Technology Stack
+- Experience Level
+
+This information is sent to Gemini, which generates role-specific interview questions.
+
+### 2. Answer Evaluation
+
+After the candidate answers a question using speech-to-text, the application sends the interview question and candidate answer to Gemini.
+
+Gemini evaluates the response and generates:
+
+- A rating from 1 to 10
+- Detailed feedback
+
+The result is then stored in PostgreSQL.
+
+## 🗄️ Database
+
+The application uses PostgreSQL hosted on Neon and Drizzle ORM for database interaction.
+
+The database stores:
+
+- Interview information
+- Interview questions
+- Candidate answers
+- Correct answers
+- AI-generated feedback
+- Ratings
+- User email
+- Interview timestamps
+
+Drizzle ORM is used to define the database schema and perform database operations.
+
+## 🔐 Environment Variables
+
+Create a `.env.local` file in the project root.
+
+Required environment variables include:
+
+- Clerk publishable key
+- Clerk secret key
+- Gemini API key
+- Neon PostgreSQL connection string
+- Clerk sign-in URL
+- Clerk sign-up URL
+
+Example:
+
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+CLERK_SECRET_KEY=your_clerk_secret_key
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+NEXT_PUBLIC_KEY_GEMINI=your_gemini_api_key
+NEXT_PUBLIC_DRIZZLE_DB_URL=your_neon_postgresql_connection_string
+NEXT_PUBLIC_INFO_INTRO="Enable webcam & mic to start the interview. We never record your video."
+NEXT_PUBLIC_INFO_INSTRUCT="Answer five questions; at the end you’ll receive a detailed report."
+
+Never commit `.env.local` or expose API keys, database credentials, or Clerk secrets publicly.
+
+## ⚙️ Getting Started
+
+### 1. Clone the repository
+
+git clone https://github.com/ShivaniReddy7733/InterviewAi.git
+cd InterviewAi
+
+### 2. Install dependencies
+
+npm install
+
+### 3. Configure environment variables
+
+Create a `.env.local` file in the project root and add your Clerk, Gemini, and Neon credentials.
+
+### 4. Push the database schema
+
+npm run db-push
+
+### 5. Start the development server
+
+npm run dev
+
+Open http://localhost:3000 in your browser.
+
+## 🎯 Typical User Journey
+
+1. User signs up or signs in using Clerk.
+2. User opens the dashboard.
+3. User creates a new interview.
+4. User enters the target job role, technology stack, and experience level.
+5. Gemini generates interview questions.
+6. User enables webcam and microphone.
+7. User answers each question using voice.
+8. Speech-to-text converts the spoken answer into text.
+9. Gemini evaluates the candidate's answer.
+10. The rating and feedback are stored in PostgreSQL.
+11. User reviews the complete interview feedback and overall rating.
+
+## 🔒 Security
+
+Sensitive environment variables are stored locally in `.env.local` and excluded through `.gitignore`.
+
+The repository does not contain:
+
+- API keys
+- Database passwords
+- Clerk secret keys
+- Local environment configuration
+
+## 📌 Current Status
+
+The core mock interview workflow is fully functional.
+
+### Completed
+
+- Authentication
+- Interview creation
+- AI question generation
+- Voice-based answers
+- Speech-to-text
+- Webcam integration
+- AI answer evaluation
+- Database persistence
+- Rating generation
+- Feedback generation
+- Feedback dashboard
+- Overall interview rating
+
+## 🚀 Future Improvements
+
+Possible future improvements include:
+
+- Python-based AI backend
+- Resume-based interview generation
+- More advanced AI evaluation
+- Interview performance analytics
+- Question difficulty selection
+- Personalized interview recommendations
+- Technical and behavioral interview modes
+- Interview history and progress tracking
+
+## 👩‍💻 Author
+
+Shivani Reddy
+
+GitHub: https://github.com/ShivaniReddy7733
+
+## ⭐ Repository
+
+https://github.com/ShivaniReddy7733/InterviewAi
 
 ---
 
-## 📖 Usage Guide
-
-1. **Start a Session**: Enter your job title, tech stack, and experience level.
-
-   ![Enter Details](./howtoenterdetails.png)
-
-2. **Enable Video & Audio**: Allow access to webcam and microphone.
-
-   ![Enable Webcam & Mic](./enablemicrophoneandwebcam.png)
-
-3. **Answer Questions**: Respond to five AI-generated questions in your own words.
-
-   ![Interview Page](./Interview_page.png)
-
-4. **Review Feedback**: View analysis, scores, and suggestions.
-
-   ![Feedback Page](./feedback_page.png)
-
----
-
-## ☁️ Deployment
-
-Deploy effortlessly on Vercel:
-
-1. Push your code to GitHub.
-2. In the Vercel dashboard, import your repository.
-3. Add the same environment variables under Project Settings.
-4. Click **Deploy** — Vercel handles the build & hosting.
-
----
-
-## 🤝 Contributing & Code of Conduct
-
-We welcome contributions! Please follow these steps:
-
-1. Fork the repository.
-2. Create a branch: `git checkout -b feature/your-feature`
-3. Commit your changes: `git commit -m "Add feature"`
-4. Push: `git push origin feature/your-feature`
-5. Open a Pull Request.
-
----
-
-## 👥 Contributors
-
-* [Shivani Reddy](https://github.com/ShivaniReddy7733)
-* [Ravula Koushal Sai](https://github.com/koushalsai)
-
----
-
-*Thank you for choosing MockTalk for your interview preparation!*
+If you find this project useful, consider starring the repository.
