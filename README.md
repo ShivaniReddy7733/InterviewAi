@@ -82,8 +82,8 @@ Feedback Dashboard
 
 ## 📁 Project Structure
 
+```text
 InterviewAi/
-│
 ├── app/
 │   ├── (auth)/
 │   │   ├── sign-in/
@@ -106,18 +106,17 @@ InterviewAi/
 │   │   │       │   └── page.jsx
 │   │   │       ├── start/
 │   │   │       │   ├── _components/
-│   │   │       │   ├── QuestionsList.jsx
-│   │   │       │   └── RecordAnswerSection.jsx
+│   │   │       │   │   ├── QuestionsList.jsx
+│   │   │       │   │   └── RecordAnswerSection.jsx
+│   │   │       │   └── page.jsx
 │   │   │       └── page.jsx
 │   │   │
 │   │   ├── questions/
 │   │   │   └── page.jsx
-│   │   │
 │   │   ├── upgrade/
 │   │   │   ├── _components/
 │   │   │   │   └── PlanItemCard.jsx
 │   │   │   └── page.jsx
-│   │   │
 │   │   ├── layout.jsx
 │   │   └── page.jsx
 │   │
@@ -126,14 +125,13 @@ InterviewAi/
 │   └── page.js
 │
 ├── components/
-│   ├── ui/
-│   │   ├── button.jsx
-│   │   ├── collapsible.jsx
-│   │   ├── dialog.jsx
-│   │   ├── input.jsx
-│   │   ├── sonner.jsx
-│   │   └── textarea.jsx
-│   └── components.json
+│   └── ui/
+│       ├── button.jsx
+│       ├── collapsible.jsx
+│       ├── dialog.jsx
+│       ├── input.jsx
+│       ├── sonner.jsx
+│       └── textarea.jsx
 │
 ├── lib/
 │   └── utils.js
@@ -156,6 +154,7 @@ InterviewAi/
 ├── package-lock.json
 ├── tailwind.config.js
 └── tsconfig.json
+
 
 ## 🧠 How AI Is Used
 
